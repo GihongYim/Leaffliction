@@ -12,12 +12,31 @@ def augmentation(path: str):
     folder_path = os.path.join(*folder_list)
     if not os.path.exists(folder_path):
         os.mkdir(folder_path)
-    return_path = os.path.join(folder_path, file_name)
-    print(return_path)
     original_img = Image.open(path)
-    flip_img = ImageOps.flip(original_img)
+    # flip image
     flip_name = file_name.replace('.', '_Flip.')
-    flip_img.save(os.path.join(folder_path, flip_name))
+    flip(original_img, os.path.join(folder_path, flip_name))
+    # rotate image
+    rotate_name = file_name.replace('.', '_Rotate.')
+    rotate(original_img, os.path.join(folder_path, rotate_name))
+    # Skew image
+    skew_name = file_name.replace('.', '_Skew.')
+    skew(original_img, os.path.join(folder_path, skew_name))
+
+
+def flip(img: Image, path):
+    flip_img = ImageOps.flip(img)
+    flip_img.save(path)
+
+
+def rotate(img: Image, path):
+    rotate_img = img.rotate(90)
+    rotate_img.save(path)
+
+
+def skew(img: Image, path):
+    rotate_img = img.rotate(90)
+    rotate_img.save(path)
 
 
 if __name__ == "__main__":

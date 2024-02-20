@@ -9,6 +9,12 @@ def augmentation(path: str):
         original_img, path, filename = pcv.readimage(path)
     except Exception as e:
         print(f"{e.__class__.__name__}: {e}")
+    os.path.join("augmented_directory", path)
+    print(filename)
+    split_filename = path.split('.')
+    path[0] = path[0] + "_Flip"
+    flip_filename = '.'.join(split_filename)
+    print(flip_filename)
     flip(original_img)
 
 
@@ -31,8 +37,8 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"{e.__class__.__name__}: {e}")
         exit(1)
-    augmentation_path = "augmented_directory"
-    if not os.path.exists(augmentation_path):
-        os.mkdir(augmentation_path)
+    aug_dir = "augmented_directory"
+    if not os.path.exists(aug_dir):
+        os.mkdir(aug_dir)
     path = sys.argv[1]
     augmentation(path)

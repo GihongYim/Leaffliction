@@ -5,3 +5,9 @@ if [ ! -d Apple ]; then
     mv images Apple
     rm leaves.zip
 fi
+
+if [ ! -d .venv ]; then
+    python3 -m venv .venv
+fi
+source .venv/bin/activate
+pip install -r requirements.txt

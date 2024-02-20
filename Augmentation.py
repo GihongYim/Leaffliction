@@ -1,42 +1,20 @@
 import os
 import sys
-from PIL import Image, ImageOps
+from plantcv import plantcv as pcv
+import numpy as np
 
 
 def augmentation(path: str):
-    path_list = list(os.path.split(sys.argv[1]))
-    folder_path = path_list[0]
-    file_name = path_list[1]
-    folder_list = list(os.path.split(folder_path))
-    folder_list[0] = folder_list[0].replace('Apple', 'augmented_directory')
-    folder_path = os.path.join(*folder_list)
-    if not os.path.exists(folder_path):
-        os.mkdir(folder_path)
-    original_img = Image.open(path)
-    # flip image
-    flip_name = file_name.replace('.', '_Flip.')
-    flip(original_img, os.path.join(folder_path, flip_name))
-    # rotate image
-    rotate_name = file_name.replace('.', '_Rotate.')
-    rotate(original_img, os.path.join(folder_path, rotate_name))
-    # Skew image
-    skew_name = file_name.replace('.', '_Skew.')
-    skew(original_img, os.path.join(folder_path, skew_name))
+    try:
+        original_img, path, filename = pcv.readimage(path)
+    except Exception as e:
+        print(f"{e.__class__.__name__}: {e}")
+    flip(original_img)
 
 
-def flip(img: Image, path):
-    flip_img = ImageOps.flip(img)
-    flip_img.save(path)
-
-
-def rotate(img: Image, path):
-    rotate_img = img.rotate(90)
-    rotate_img.save(path)
-
-
-def skew(img: Image, path):
-    rotate_img = img.rotate(90)
-    rotate_img.save(path)
+def flip(img: np.ndarray):
+    flipped = pcv.flip(img=img, direction='horizontal')
+    pcv.print_image(flipped, path)
 
 
 if __name__ == "__main__":
@@ -53,7 +31,8 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"{e.__class__.__name__}: {e}")
         exit(1)
-    if not os.path.exists("augmented_directory"):
-        os.mkdir("augmented_directory")
+    augmentation_path = "augmented_directory"
+    if not os.path.exists(augmentation_path):
+        os.mkdir(augmentation_path)
     path = sys.argv[1]
     augmentation(path)

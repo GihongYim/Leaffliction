@@ -6,7 +6,7 @@ import seaborn as sns
 
 def get_category(image_root_path: str) -> dict():
     category = dict()
-    image_root_dir = './Apple'
+    image_root_dir = image_root_path
     for dir_name in os.listdir(image_root_dir):
         file_num = len(os.listdir(os.path.join(image_root_dir, dir_name)))
         category[dir_name] = file_num
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"{e.__class__.__name__} {e}")
         exit(0)
-    category = get_category('./Apple')
+    category = get_category(sys.argv[1])
     print(category)
     apple_name = list(category.keys())
     apple_num = list(category.values())

@@ -18,7 +18,7 @@ def augmentation(path: str):
 
     # skew
     skew_factor = 0.5
-    skew_matrix = np.array([[1, skew_factor, 0], [0, 1, 0]])
+    skew_matrix = np.array([[1, skew_factor, 0], [-skew_factor, 1, 0]])
     skew(original_img, path, filename,
          skew_matrix=skew_matrix)
     # shear

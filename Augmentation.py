@@ -26,9 +26,12 @@ def augmentation(path: str):
     shear_matrix = np.array([[1, shear_factor, 0], [0, 1, 0]])
     shear(original_img, path, filename,
           shear_matrix=shear_matrix)
-    
+
     # crop
     crop(original_img, path, filename, x=80, y=80, h=80, w=80)
+
+    # distortion
+    distortion(original_img, path, filename)
 
 
 def flip(img: np.ndarray, path, filename, direction='vertical'):
@@ -99,6 +102,23 @@ def crop(img: np.ndarray, path, filename, x, y, h, w):
     print(resize_crop_img.shape)
     pcv.print_image(resize_crop_img, filename=os.path.join(augmentation_dir,
                                                            crop_filename))
+
+
+def distortion(img: np.ndarray, path, filename):
+    augmentation_dir = os.path.join("augmented_directory", path)
+    if not os.path.exists(augmentation_dir):
+        os.makedirs(augmentation_dir)
+    split_filename = filename.split('.')
+    split_filename[0] = split_filename[0] + "_Distortion"
+    distortion_filename = '.'.join(split_filename)
+
+    hsv_image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    hsv_image[:, :, 1] = hsv_image[:, :, 1] * 0.5
+
+    distoted_img = cv2.cvtColor(hsv_image, cv2.COLOR_HSV2BGR)
+
+    pcv.print_image(distoted_img, filename=os.path.join(augmentation_dir,
+                                                        distortion_filename))
 
 
 if __name__ == "__main__":

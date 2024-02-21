@@ -9,4 +9,16 @@ def transformation(path: str):
 
 
 if __name__ == "__main__":
-    
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-src', type=str)
+    parser.add_argument('-dst', type=str)
+    parser.add_argument('-mask', action='store_true')
+    args = parser.parse_args()
+
+    src_dir = args.src
+    dst_dir = args.dst
+    mask = args.mask
+    print(src_dir)
+    print(dst_dir)
+    print(mask)

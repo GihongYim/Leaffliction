@@ -26,6 +26,9 @@ def augmentation(path: str):
     shear_matrix = np.array([[1, shear_factor, 0], [0, 1, 0]])
     shear(original_img, path, filename,
           shear_matrix=shear_matrix)
+    
+    # crop
+    crop(original_img, path, filename, x=80, y=80, h=80, w=80)
 
 
 def flip(img: np.ndarray, path, filename, direction='vertical'):
@@ -80,6 +83,22 @@ def shear(img: np.ndarray, path, filename, shear_matrix):
     sheared_img_array = cv2.warpAffine(img, shear_matrix, (cols, rows))
     pcv.print_image(sheared_img_array, filename=os.path.join(augmentation_dir,
                                                              shear_filename))
+
+
+def crop(img: np.ndarray, path, filename, x, y, h, w):
+    augmentation_dir = os.path.join("augmented_directory", path)
+    if not os.path.exists(augmentation_dir):
+        os.makedirs(augmentation_dir)
+    split_filename = filename.split('.')
+    split_filename[0] = split_filename[0] + "_Crop"
+    crop_filename = '.'.join(split_filename)
+
+    rows, cols, _ = img.shape
+    crop_img = pcv.crop(img=img, x=x, y=y, h=h, w=w)
+    resize_crop_img = cv2.resize(crop_img, dsize=(rows, cols))
+    print(resize_crop_img.shape)
+    pcv.print_image(resize_crop_img, filename=os.path.join(augmentation_dir,
+                                                           crop_filename))
 
 
 if __name__ == "__main__":
